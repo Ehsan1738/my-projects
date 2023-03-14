@@ -1,0 +1,63 @@
+
+import random
+import time
+
+def guess_the_number():
+    # Define the possible difficulty levels
+    difficulty_levels = [
+        ["easy", [1, 30]],
+        ["medium", [1, 70]],
+    ]
+
+    # Prompt the user to choose a difficulty level
+    while True:
+        level_choice = input("Choose a difficulty level (easy or medium): ")
+        if level_choice in ["easy", "medium"]:
+            break
+        else:
+            print("Invalid choice. Please try again.")
+
+    # Get the range of numbers for the chosen difficulty level
+    level_range = [level[1] for level in difficulty_levels if level[0] == level_choice][0]
+
+    # Generate a random number within the chosen range
+    number = random.randint(level_range[0], level_range[1])
+
+    # Play the game
+    players = ["player1", "player2"]
+    attempts = 0
+    start_timer = time.time()
+    
+    for player in players:
+        print(f"{player}, it's your turn to guess!")
+        
+        while True:
+            attempts += 1
+         #if the player has less than 6 attemtps than he can go on guessing. 
+            if attempts < 6:
+                guess = int(input(f"Guess a number between {level_range[0]} and {level_range[1]}: "))
+                # Check whether the guess is correct
+                if guess == number:
+                    end_time = time.time()
+                    elapsed_time = end_time - start_timer
+                    print(f"Congratulations, {player}! You guessed the number in {attempts} attempts!")
+                    print(f"Time taken: {round(elapsed_time, 2)} seconds")
+                    break
+                elif guess < number :
+                    print("Your guess was too low, try again.")
+                else:
+                     print("Your guess was too high, try again.")
+
+            else:
+              print("Time is up!")
+              print(f"The correct number was {number}.")
+              attempts = 0 
+              break
+        
+    # Ask the user if they want to play again
+    play_again = input("Do you want to play again? (y/n) ")
+    if play_again.lower() == "y":
+        guess_the_number()
+
+# Call the function to start the game
+guess_the_number()
